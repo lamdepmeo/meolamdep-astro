@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import PostCard from "../components/PostCard.astro";
+
+const { category } = Astro.params;
+const res = await fetch(`https://meolamdep.info/wp-json/wp/v2/posts?_embed&categories=${category}&per_page=10`);
+const posts = await res.json();
+---
+
+<Base title={category} description={`Bài viết trong chuyên mục ${category}`}>
+  <Fragment slot="header"><Header /></Fragment>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;">
+    {posts.map(post => <PostCard post={post} />)}
+  </div>
+  <Fragment slot="footer"><Footer /></Fragment>
+</Base>
