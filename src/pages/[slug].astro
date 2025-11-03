@@ -3,17 +3,31 @@ import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
+// 🚀 BẮT BUỘC cho SSG: liệt kê tất cả các slug cần build
+export async function getStaticPaths() {
+  const res = await fetch("https://meolamdep.info/wp-json/wp/v2/posts?_fields=slug&per_page=100");
+  const posts = await res.json();
+
+  // Astro sẽ build trước tất cả các slug này
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+// ✅ Lấy chi tiết bài viết
 const { slug } = Astro.params;
 const res = await fetch(`https://meolamdep.info/wp-json/wp/v2/posts?_embed&slug=${slug}`);
 const [post] = await res.json();
-if(!post) throw new Error('Post not found');
+if (!post) throw new Error(`Post not found: ${slug}`);
 ---
 
 <Base title={post.title.rendered} description={post.excerpt.rendered}>
   <Fragment slot="header"><Header /></Fragment>
-  <article>
+
+  <article class="container mx-auto max-w-3xl px-4 py-8 prose prose-pink">
     <h1 set:html={post.title.rendered}></h1>
     <div set:html={post.content.rendered}></div>
   </article>
+
   <Fragment slot="footer"><Footer /></Fragment>
 </Base>
