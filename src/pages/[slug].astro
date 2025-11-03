@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+const { slug } = Astro.params;
+const res = await fetch(`https://meolamdep.info/wp-json/wp/v2/posts?_embed&slug=${slug}`);
+const [post] = await res.json();
+if(!post) throw new Error('Post not found');
+---
+
+<Base title={post.title.rendered} description={post.excerpt.rendered}>
+  <Fragment slot="header"><Header /></Fragment>
+  <article>
+    <h1 set:html={post.title.rendered}></h1>
+    <div set:html={post.content.rendered}></div>
+  </article>
+  <Fragment slot="footer"><Footer /></Fragment>
+</Base>
