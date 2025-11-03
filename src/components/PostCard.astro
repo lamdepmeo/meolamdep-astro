@@ -1,0 +1,15 @@
+---
+const { post } = Astro.props;
+const thumb = post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '/assets/noimg.jpg';
+const cat = post._embedded?.['wp:term']?.[0]?.[0];
+const catSlug = cat?.slug || '#';
+const catName = cat?.name || '';
+---
+<a href={`/${post.slug}/`} class="post-card">
+  <div class="post-thumb"><img src={thumb} alt={post.title.rendered} /></div>
+  <div class="post-content">
+    <div class="category"><a href={`/${catSlug}/`}>{catName}</a></div>
+    <div class="title" set:html={post.title.rendered}></div>
+    <div class="excerpt" set:html={post.excerpt.rendered}></div>
+  </div>
+</a>
