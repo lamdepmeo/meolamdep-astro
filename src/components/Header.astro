@@ -1,0 +1,17 @@
+<header>
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;">
+    <div><img src="/assets/logo.svg" alt="Meo Làm Đẹp" style="height:40px;" /></div>
+    <nav>
+      <a href="/">Trang chủ</a>
+      <a href="/gioi-thieu/">Giới thiệu</a>
+      <a href="/lien-he/">Liên hệ</a>
+    </nav>
+    <div id="search-toggle" style="cursor:pointer;">🔍</div>
+  </div>
+</header>
+<script>
+document.getElementById('search-toggle').addEventListener('click', () => {
+  const input = prompt('Nhập từ khóa cần tìm:');
+  if(input) window.location.href = '/?s=' + encodeURIComponent(input);
+});
+</script>
